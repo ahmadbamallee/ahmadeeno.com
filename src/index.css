@@ -310,6 +310,7 @@ h1 {
 }
 
 .service-item {
+  margin-top: 3%;
   width: 200px;
   background: #fff;
   padding: 15px;
@@ -320,7 +321,7 @@ h1 {
 }
 
 .service-item:hover {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 
 .service-item img {
@@ -1128,7 +1129,7 @@ h1 {
 }
 
 .dynamic-title {
-  font-size: 2rem;
+  font-size: 1rem;
   background: linear-gradient(90deg, #8a2be2, #ff69b4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1152,13 +1153,6 @@ h1 {
   background-color: #f9f9f9;
   border-radius: 20px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.dynamic-title {
-  font-size: 2.5rem;
-  color: #d63384;
-  margin-left: 0.5rem;
-  animation: fadeIn 1s ease-in-out;
 }
 
 .about-content {
@@ -1237,7 +1231,7 @@ h1 {
 
   /* Dynamic title styling */
   .dynamic-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     background: linear-gradient(90deg, #8a2be2, #ff69b4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

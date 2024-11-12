@@ -58,14 +58,14 @@ img {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: #333;
   font-weight: bold;
   display: inline;
 }
 
 .dynamic-title {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: #d63384;
   margin-left: 0.5rem;
   animation: fadeIn 1s ease-in-out;
@@ -333,7 +333,6 @@ h1 {
   font-weight: bold;
 }
 /* src/components/Navbar.css */
-/* Navbar */
 .navbar {
   position: fixed;
   top: 1%;
@@ -493,7 +492,7 @@ h1 strong {
 }
 
 .dynamic-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   background: linear-gradient(90deg, #8a2be2, #ff69b4); /* Apply the gradient here */
   -webkit-background-clip: text; /* Clip the gradient to the text */
   -webkit-text-fill-color: transparent; /* Make the text color transparent */
@@ -505,7 +504,7 @@ h1 strong {
 
 /* Adjust styles as necessary */
 .home-content h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #333;
 }
 
@@ -521,9 +520,9 @@ h1 strong {
 }
 
 .buttons {
-  margin-top: 20px;
+  margin-top: 25px;
   display: flex;
-  gap: 20px;
+  gap: 25px;
 }
 
 .btn {
@@ -982,4 +981,274 @@ h1 strong {
 .certificate-description {
   font-size: 0.9rem;
   color: #666;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  /* Home Page Adjustments */
+  .home {
+    flex-direction: column; /* Stack image and content vertically */
+    text-align: center;
+  }
+
+  .home-content {
+    order: 2;
+    padding: 0 25px;
+  }
+
+  .profile-image {
+    margin-top: 2%;
+    order: 1;
+    width: 150px; /* Smaller image size for mobile */
+    margin-bottom: 1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  /* About Page Adjustments */
+.about {
+  flex-direction: column-reverse; /* Place the image above content */
+  align-items: center;
+  text-align: center;
+}
+
+/* Center content and image in About page */
+.about-content-wrapper {
+  align-self: center;
+  max-width: 100%;
+  text-align: center;
+  margin-top: 1rem; /* Add space between image and content */
+}
+
+/* Profile image adjustments for About page */
+.about-image {
+  align-self: center;
+  width: 150px;
+  margin: 0; /* Remove left margin for center alignment */
+}
+
+/* Adjust the layout for the introduction text on the About page */
+.intro {
+  font-size: 1rem;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 0; /* Remove bottom margin to align closely with the name */
+  display: block; /* Ensure "HELLO" is on a separate line */
+}
+
+/* Name styling */
+h1 {
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+  line-height: 1.2;
+  display: block; /* Ensure the name is on its own line */
+  margin: 0.5rem 0; /* Add space between name and dynamic title */
+}
+
+/* Dynamic title styling */
+.dynamic-title {
+  font-size: 2rem;
+  background: linear-gradient(90deg, #8a2be2, #ff69b4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  margin-top: 0.5rem;
+  display: block;
+  height: 2.5rem; /* Set height based on your font-size */
+  overflow: hidden; /* Ensures text doesn’t push the height */
+}
+
+
+/* Center-align for mobile view */
+@media (max-width: 768px) {
+  .about-content-wrapper {
+    text-align: center;
+  }
+}
+
+  /* Blog Page Adjustments */
+  .blog-post {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .post-cover-image {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 1rem;
+  }
+
+  .blog-content {
+    text-align: center;
+  }
+
+  /* Contact Page Adjustments */
+  .contact-page {
+    flex-direction: column;
+  }
+
+  .social-media-section, .contact-form-section {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Responsive Typography */
+  h1, .dynamic-title {
+    font-size: 1.8rem;
+  }
+
+  h2, h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Existing Styles */
+
+.about-content-wrapper {
+  max-width: 70%;
+}
+
+.intro {
+  font-size: 1.1rem;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: bold;
+  display: inline;
+}
+
+.dynamic-title {
+  font-size: 2rem;
+  background: linear-gradient(90deg, #8a2be2, #ff69b4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  margin-top: 0.5rem;
+  display: block;
+  height: 3rem; /* Set height based on your font-size */
+  overflow: hidden; /* Ensures text doesn’t push the height */
+}
+
+
+/* About Page */
+.about {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dynamic-title {
+  font-size: 2.5rem;
+  color: #d63384;
+  margin-left: 0.5rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.about-content {
+  max-width: 600px;
+  line-height: 1.8;
+  color: #555;
+  margin-top: 1rem;
+}
+
+.about-image {
+  width: 220px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 2rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  /* Home Page Adjustments */
+  .home {
+    flex-direction: column; /* Stack image and content vertically */
+    text-align: center;
+  }
+
+  .home-content {
+    order: 2;
+    padding: 0 20px;
+  }
+
+  .profile-image {
+    margin-top: 2%;
+    order: 1;
+    width: 150px; /* Smaller image size for mobile */
+    margin-bottom: 1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* About Page Adjustments */
+  .about {
+    flex-direction: column-reverse; /* Place the image above content */
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-content-wrapper {
+    align-self: center;
+    max-width: 100%;
+    text-align: center;
+    margin-top: 1rem; /* Add space between image and content */
+  }
+
+  .about-image {
+    align-self: center;
+    width: 150px;
+    margin: 0; /* Remove left margin for center alignment */
+  }
+
+  .intro {
+    font-size: 1rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 0; /* Remove bottom margin to align closely with the name */
+    display: block; /* Ensure "HELLO" is on a separate line */
+  }
+
+
+  /* Dynamic title styling */
+  .dynamic-title {
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, #8a2be2, #ff69b4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    margin-top: 0.5rem;
+    display: block; /* Ensure the title is on a new line */
+  }
+
+  /* Center-align for mobile view */
+  .about-content-wrapper {
+    text-align: center;
+  }
 }

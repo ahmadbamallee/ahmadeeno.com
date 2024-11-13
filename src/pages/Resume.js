@@ -9,6 +9,7 @@ function Resume() {
   const [showConfirm, setShowConfirm] = useState(false); // Track confirmation popup state
 
   useEffect(() => {
+    // Fetch resume data
     sanityClient
       .fetch(`*[_type == "resume"]{
         sectionTitle,
@@ -16,29 +17,46 @@ function Resume() {
           title,
           description,
           location,
-          period
-        },
-        "cvUrl": cvFile.asset->url
+          period,
+          createdAt
+        }
       }`)
       .then((data) => {
+        console.log("Fetched resume data:", data);
         setResumeData(data);
-        if (data[0]?.cvUrl) setCvUrl(data[0].cvUrl);
+      })
+      .catch(console.error);
+
+    // Fetch CV file URL separately
+    sanityClient
+      .fetch(`*[_type == "cvFile"][0]{ "cvUrl": cvFile.asset->url }`)
+      .then((data) => {
+        if (data?.cvUrl) {
+          setCvUrl(data.cvUrl);
+          console.log("CV URL is set to:", data.cvUrl);
+        } else {
+          console.log("No CV file found.");
+        }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
   const handleDownloadClick = (e) => {
-    e.preventDefault(); // Prevent default download action
-    setShowConfirm(true); // Show confirmation popup
+    e.preventDefault();
+    setShowConfirm(true);
   };
 
   const confirmDownload = () => {
     setShowConfirm(false);
-    const link = document.createElement('a');
-    link.href = cvUrl;
-    link.download = 'My_CV.pdf';
-    link.click();
+    if (cvUrl) {
+      const link = document.createElement('a');
+      link.href = cvUrl;
+      link.download = 'My_CV.pdf';
+      link.click();
+    } else {
+      console.error("No CV URL available for download.");
+    }
   };
 
   if (loading) {
@@ -69,11 +87,15 @@ function Resume() {
           </div>
         </div>
       ))}
-      {cvUrl && (
+
+      {cvUrl ? (
         <button onClick={handleDownloadClick} className="cv-download-button">
           Download my CV
         </button>
+      ) : (
+        <p>CV file is not available.</p>
       )}
+
       {showConfirm && (
         <div className="confirm-popup">
           <div className="popup-content">

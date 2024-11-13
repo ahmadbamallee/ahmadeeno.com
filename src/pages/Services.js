@@ -22,7 +22,7 @@ function Services() {
   return (
     <div className="services">
       <h1>Services</h1>
-      <div className="services-list">
+      <div className="service-list"> {/* Changed to match the CSS class name */}
         {services.map((service) => (
           <div key={service.serviceName} className="service-item">
             {service.iconUrl && (

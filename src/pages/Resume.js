@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import sanityClient from '../sanityClient';
+import PortableText from '@sanity/block-content-to-react';
 
 function Resume() {
   const [resumeData, setResumeData] = useState([]);
@@ -47,8 +48,8 @@ function Resume() {
   return (
     <div className="resume">
       <h1>Resume</h1>
-      {resumeData.map((section) => (
-        <div key={section.sectionTitle} className="resume-section">
+      {resumeData.map((section, sectionIndex) => (
+        <div key={section.sectionTitle || sectionIndex} className="resume-section">
           <h2 className="section-title">{section.sectionTitle}</h2>
           <div className="resume-items">
             {section.items && section.items.length > 0 ? (
@@ -57,7 +58,9 @@ function Resume() {
                   <h3>{item.title}</h3>
                   {item.period && <p className="period">{item.period}</p>}
                   {item.location && <p className="location">{item.location}</p>}
-                  <p>{item.description}</p>
+                  <div className="description">
+                    {item.description && <PortableText blocks={item.description} />}
+                  </div>
                 </div>
               ))
             ) : (

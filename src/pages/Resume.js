@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import sanityClient from '../sanityClient';
-import PortableText from '@sanity/block-content-to-react';
+import { PortableText } from '@portabletext/react';
 
 function Resume() {
   const [resumeData, setResumeData] = useState([]);
@@ -8,12 +8,15 @@ function Resume() {
   const [loading, setLoading] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false); // Track confirmation popup state
 
+  const projectId = sanityClient.config().projectId;
+  const dataset = sanityClient.config().dataset;
+
   useEffect(() => {
-    // Fetch resume data
+    // Fetch resume data with oldest items first
     sanityClient
       .fetch(`*[_type == "resume"]{
         sectionTitle,
-        items[]{
+        items[] | order(createdAt asc){
           title,
           description,
           location,
@@ -22,7 +25,6 @@ function Resume() {
         }
       }`)
       .then((data) => {
-        console.log("Fetched resume data:", data);
         setResumeData(data);
       })
       .catch(console.error);
@@ -33,9 +35,6 @@ function Resume() {
       .then((data) => {
         if (data?.cvUrl) {
           setCvUrl(data.cvUrl);
-          console.log("CV URL is set to:", data.cvUrl);
-        } else {
-          console.log("No CV file found.");
         }
       })
       .catch(console.error)
@@ -54,8 +53,6 @@ function Resume() {
       link.href = cvUrl;
       link.download = 'My_CV.pdf';
       link.click();
-    } else {
-      console.error("No CV URL available for download.");
     }
   };
 
@@ -77,7 +74,18 @@ function Resume() {
                   {item.period && <p className="period">{item.period}</p>}
                   {item.location && <p className="location">{item.location}</p>}
                   <div className="description">
-                    {item.description && <PortableText blocks={item.description} />}
+                    {item.description && (
+                      <PortableText 
+                        value={item.description}
+                        components={{
+                          types: {
+                            block: ({value, children}) => {
+                              return <p>{children}</p>
+                            }
+                          }
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               ))

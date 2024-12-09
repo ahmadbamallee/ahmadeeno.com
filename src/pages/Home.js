@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import sanityClient from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
 
-// Set up the image builder
 const builder = imageUrlBuilder(sanityClient);
 function urlFor(source) {
   return builder.image(source);
@@ -11,6 +10,7 @@ function urlFor(source) {
 
 function Home() {
   const [homeData, setHomeData] = useState(null);
+  const [trendingPost, setTrendingPost] = useState(null);
   const [displayedTitle, setDisplayedTitle] = useState("");
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -24,11 +24,21 @@ function Home() {
       .fetch(`*[_type == "home"][0]{ heroImage, titles, intro, name }`)
       .then((data) => setHomeData(data))
       .catch(console.error);
+
+    sanityClient
+      .fetch(`*[_type == "trendingOnSite"][0]{
+        title,
+        slug,
+        _createdAt,
+        author-> { name, "imageUrl": profilePicture.asset->url }
+      }`)
+      .then((data) => setTrendingPost(data))
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
     if (homeData && homeData.titles) {
-      let title = homeData.titles[currentTitleIndex];
+      const title = homeData.titles[currentTitleIndex];
       let speed = isDeleting ? deletingSpeed : typingSpeed;
 
       const handleTyping = setTimeout(() => {
@@ -55,24 +65,50 @@ function Home() {
   }
 
   return (
-    <div className="home">
-      <div className="home-content">
-        <p className="intro">{homeData.intro}</p>
-        <h1>
-          I'm <strong>{homeData.name}</strong>
-        </h1>
-        <h2 className="dynamic-title">{displayedTitle}</h2> {/* Display dynamic title below */}
-        <div className="buttons">
-          <Link to="/skills" className="btn btn-primary">Skills</Link>
-          <Link to="/resume" className="btn btn-outline">Resume</Link>
+    <div className="app-wrapper">
+      {/* Home Section */}
+      <div className="home">
+        <div className="home-content">
+          <p className="intro">{homeData.intro}</p>
+          <h1>
+            I'm <strong>{homeData.name}</strong>
+          </h1>
+          <h2 className="dynamic-title">{displayedTitle}</h2>
+          <div className="buttons">
+            <Link to="/certificates" className="btn btn-primary">Certificates</Link>
+          </div>
         </div>
+        {homeData.heroImage && (
+          <img 
+            src={urlFor(homeData.heroImage).width(200).url()} 
+            alt="Profile" 
+            className="profile-image" 
+          />
+        )}
       </div>
-      {homeData.heroImage && (
-        <img 
-          src={urlFor(homeData.heroImage).width(200).url()} 
-          alt="Profile" 
-          className="profile-image" 
-        />
+
+      {/* Trending on Site Section */}
+      {trendingPost && (
+        <section className="trending-site-section">
+          <h2>Trending on Site</h2>
+          <div className="trending-content">
+            <h3>{trendingPost.title}</h3>
+            <div className="author-info">
+              {trendingPost.author.imageUrl && (
+                <img
+                  src={urlFor(trendingPost.author.imageUrl).width(50).url()}
+                  alt={trendingPost.author.name}
+                  className="author-icon"
+                />
+              )}
+              <p>By {trendingPost.author.name} • {new Date(trendingPost._createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}</p>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   );

@@ -18,6 +18,10 @@ function About() {
   const deletingSpeed = 100;
   const pauseDuration = 2000;
 
+<<<<<<< HEAD
+=======
+  // Fetch Sanity data
+>>>>>>> 9d3f800 (Deploy updated project)
   useEffect(() => {
     sanityClient
       .fetch('*[_type == "about"][0]{content, profileImage, titles}')
@@ -25,6 +29,10 @@ function About() {
       .catch(console.error);
   }, []);
 
+<<<<<<< HEAD
+=======
+  // Typing effect logic
+>>>>>>> 9d3f800 (Deploy updated project)
   useEffect(() => {
     if (aboutData && aboutData.titles) {
       const title = aboutData.titles[currentTitleIndex];
@@ -69,12 +77,19 @@ function About() {
           )}
         </div>
       </div>
+<<<<<<< HEAD
       {aboutData.profileImage && (
         <img 
           src={urlFor(aboutData.profileImage)
             .width(220)
             .quality(100)
             .url()} 
+=======
+
+      {aboutData.profileImage && (
+        <img 
+          src={urlFor(aboutData.profileImage).width(220).quality(100).url()} 
+>>>>>>> 9d3f800 (Deploy updated project)
           alt="Profile" 
           className="about-image" 
         />

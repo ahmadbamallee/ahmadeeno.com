@@ -8,12 +8,9 @@ function Resume() {
   const [loading, setLoading] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false); // Track confirmation popup state
 
-<<<<<<< HEAD
   const projectId = sanityClient.config().projectId;
   const dataset = sanityClient.config().dataset;
 
-=======
->>>>>>> 9d3f800 (Deploy updated project)
   useEffect(() => {
     // Fetch resume data with oldest items first
     sanityClient
@@ -32,15 +29,9 @@ function Resume() {
       })
       .catch(console.error);
 
-<<<<<<< HEAD
-    // Fetch CV file URL separately
-    sanityClient
-      .fetch(`*[_type == "cvFile"][0]{ "cvUrl": cvFile.asset->url }`)
-=======
     // Fetch CV file URL separately, ensure it's published
     sanityClient
       .fetch(`*[_type == "cvFile" && defined(cvFile.asset)][0]{ "cvUrl": cvFile.asset->url }`)
->>>>>>> 9d3f800 (Deploy updated project)
       .then((data) => {
         if (data?.cvUrl) {
           setCvUrl(data.cvUrl);
@@ -88,8 +79,8 @@ function Resume() {
                         value={item.description}
                         components={{
                           types: {
-                            block: ({value, children}) => {
-                              return <p>{children}</p>
+                            block: ({ value, children }) => {
+                              return <p>{children}</p>;
                             }
                           }
                         }}

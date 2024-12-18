@@ -8,6 +8,26 @@ function urlFor(source) {
   return builder.image(source);
 }
 
+const serializers = {
+  types: {
+    block: (props) => {
+      const { style = 'normal' } = props.node;
+      switch (style) {
+        case 'h1':
+          return <h1>{props.children}</h1>;
+        case 'h2':
+          return <h2>{props.children}</h2>;
+        default:
+          return <p>{props.children}</p>;
+      }
+    },
+    image: (props) => {
+      const { asset } = props.node;
+      return asset ? <img src={urlFor(asset).url()} alt={props.node.alt || ''} /> : null;
+    },
+  },
+};
+
 function About() {
   const [aboutData, setAboutData] = useState(null);
   const [displayedTitle, setDisplayedTitle] = useState("");
@@ -18,10 +38,6 @@ function About() {
   const deletingSpeed = 100;
   const pauseDuration = 2000;
 
-<<<<<<< HEAD
-=======
-  // Fetch Sanity data
->>>>>>> 9d3f800 (Deploy updated project)
   useEffect(() => {
     sanityClient
       .fetch('*[_type == "about"][0]{content, profileImage, titles}')
@@ -29,10 +45,6 @@ function About() {
       .catch(console.error);
   }, []);
 
-<<<<<<< HEAD
-=======
-  // Typing effect logic
->>>>>>> 9d3f800 (Deploy updated project)
   useEffect(() => {
     if (aboutData && aboutData.titles) {
       const title = aboutData.titles[currentTitleIndex];
@@ -69,29 +81,21 @@ function About() {
         </h1>
         <div className="about-content">
           {aboutData.content && (
-            <BlockContent 
+            <BlockContent
               blocks={aboutData.content}
               projectId={sanityClient.config().projectId}
               dataset={sanityClient.config().dataset}
+              serializers={serializers}
             />
           )}
         </div>
       </div>
-<<<<<<< HEAD
-      {aboutData.profileImage && (
-        <img 
-          src={urlFor(aboutData.profileImage)
-            .width(220)
-            .quality(100)
-            .url()} 
-=======
 
       {aboutData.profileImage && (
-        <img 
-          src={urlFor(aboutData.profileImage).width(220).quality(100).url()} 
->>>>>>> 9d3f800 (Deploy updated project)
-          alt="Profile" 
-          className="about-image" 
+        <img
+          src={urlFor(aboutData.profileImage).width(220).quality(100).url()}
+          alt="Profile"
+          className="about-image"
         />
       )}
     </div>

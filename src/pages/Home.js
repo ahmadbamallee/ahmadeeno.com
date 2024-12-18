@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import sanityClient from '../sanityClient';
 import imageUrlBuilder from '@sanity/image-url';
-<<<<<<< HEAD
-=======
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
->>>>>>> 9d3f800 (Deploy updated project)
 
 const builder = imageUrlBuilder(sanityClient);
 function urlFor(source) {
@@ -16,32 +13,25 @@ function urlFor(source) {
 function Home() {
   const [homeData, setHomeData] = useState(null);
   const [trendingPost, setTrendingPost] = useState(null);
-<<<<<<< HEAD
-  const [displayedTitle, setDisplayedTitle] = useState("");
-  const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-=======
   const [badges, setBadges] = useState([]);
   const [displayedTitle, setDisplayedTitle] = useState("");
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
->>>>>>> 9d3f800 (Deploy updated project)
 
   const typingSpeed = 150;
   const deletingSpeed = 100;
   const pauseDuration = 2000;
-<<<<<<< HEAD
-=======
-  const badgesPerPage = 4;
->>>>>>> 9d3f800 (Deploy updated project)
+  const badgesPerPage = 3;
 
   useEffect(() => {
+    // Fetch home data
     sanityClient
       .fetch(`*[_type == "home"][0]{ heroImage, titles, intro, name }`)
       .then((data) => setHomeData(data))
-      .catch(console.error);
+      .catch((err) => console.error('Error fetching home data:', err));
 
+    // Fetch trending post
     sanityClient
       .fetch(`*[_type == "trendingOnSite"][0]{
         title,
@@ -50,27 +40,19 @@ function Home() {
         author-> { name, "imageUrl": profilePicture.asset->url }
       }`)
       .then((data) => setTrendingPost(data))
-      .catch(console.error);
-<<<<<<< HEAD
-=======
+      .catch((err) => console.error('Error fetching trending post:', err));
 
     // Fetch digital badges
     sanityClient
-      .fetch(`*[_type == "digitalBadge"]{ embedCode, title }`)
+      .fetch(`*[_type == "digitalBadge"]{ title, "badgeImageUrl": badgeImage.asset->url, verificationLink }`)
       .then((data) => {
-        setBadges(data);
-        // Dynamically load Credly embed script after rendering badges
-        const script = document.createElement('script');
-        script.src = "https://cdn.credly.com/assets/utilities/embed.js";
-        script.async = true;
-        document.body.appendChild(script);
-
-        return () => {
-          document.body.removeChild(script); // Cleanup script
-        };
+        if (!data || data.length === 0) {
+          console.error('No badges found.');
+        } else {
+          setBadges(data);
+        }
       })
-      .catch(console.error);
->>>>>>> 9d3f800 (Deploy updated project)
+      .catch((err) => console.error('Error fetching badges:', err));
   }, []);
 
   useEffect(() => {
@@ -95,9 +77,6 @@ function Home() {
 
       return () => clearTimeout(handleTyping);
     }
-<<<<<<< HEAD
-  }, [homeData, displayedTitle, isDeleting, currentTitleIndex, typingSpeed, deletingSpeed, pauseDuration]);
-=======
   }, [homeData, displayedTitle, isDeleting, currentTitleIndex]);
 
   const totalSlides = Math.ceil(badges.length / badgesPerPage);
@@ -114,7 +93,6 @@ function Home() {
     currentSlide * badgesPerPage,
     currentSlide * badgesPerPage + badgesPerPage
   );
->>>>>>> 9d3f800 (Deploy updated project)
 
   if (!homeData) {
     return <div className="loading">Loading...</div>;
@@ -131,16 +109,6 @@ function Home() {
           </h1>
           <h2 className="dynamic-title">{displayedTitle}</h2>
           <div className="buttons">
-<<<<<<< HEAD
-            <Link to="/certificates" className="btn btn-primary">Certificates</Link>
-          </div>
-        </div>
-        {homeData.heroImage && (
-          <img 
-            src={urlFor(homeData.heroImage).width(200).url()} 
-            alt="Profile" 
-            className="profile-image" 
-=======
             <Link to="/certificates" className="btn btn-primary">
               Certificates
             </Link>
@@ -151,7 +119,6 @@ function Home() {
             src={urlFor(homeData.heroImage).width(200).url()}
             alt="Profile"
             className="profile-image"
->>>>>>> 9d3f800 (Deploy updated project)
           />
         )}
       </div>
@@ -170,13 +137,6 @@ function Home() {
                   className="author-icon"
                 />
               )}
-<<<<<<< HEAD
-              <p>By {trendingPost.author.name} • {new Date(trendingPost._createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}</p>
-=======
               <p>
                 By {trendingPost.author.name} •{' '}
                 {new Date(trendingPost._createdAt).toLocaleDateString('en-US', {
@@ -185,13 +145,10 @@ function Home() {
                   day: 'numeric',
                 })}
               </p>
->>>>>>> 9d3f800 (Deploy updated project)
             </div>
           </div>
         </section>
       )}
-<<<<<<< HEAD
-=======
 
       {/* Badge Section with Pagination */}
       {badges.length > 0 && (
@@ -204,11 +161,24 @@ function Home() {
             <div className="badges-container">
               {displayedBadges.map((badge, index) => (
                 <div key={index} className="badge-card">
-                  <div
-                    className="badge-content"
-                    dangerouslySetInnerHTML={{ __html: badge.embedCode }}
-                  ></div>
+                  {badge.badgeImageUrl && (
+                    <img
+                      src={badge.badgeImageUrl}
+                      alt={badge.title}
+                      className="badge-image"
+                    />
+                  )}
                   <p className="badge-title">{badge.title}</p>
+                  {badge.verificationLink && (
+                    <a
+                      href={badge.verificationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="verification-link"
+                    >
+                      Verify Badge
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -218,7 +188,6 @@ function Home() {
           </div>
         </section>
       )}
->>>>>>> 9d3f800 (Deploy updated project)
     </div>
   );
 }
